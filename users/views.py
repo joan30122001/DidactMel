@@ -34,7 +34,7 @@ def signin(request):
         raise exceptions.AuthenticationFailed("incorret password")
 
     response = Response()
-    # je genere le json web tken
+    # je genere le json web token
     token = access_tokens(user)
     #  je set le cookie
     response.set_cookie(key='jwt', value=token, httponly=True)
