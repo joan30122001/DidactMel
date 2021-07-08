@@ -31,7 +31,7 @@ class FormationViewSet(viewsets.ViewSet):
         })
 
     def create(self, request):
-        serializer = ForamtionSerializer(data=request.data)
+        serializer = FormationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({
