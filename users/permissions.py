@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .serializers import UsersSerializer
+from .serializers import UserSerializer
 
 
 class ViewPermission(permissions.BasePermission):

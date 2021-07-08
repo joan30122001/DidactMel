@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
-from .serializers import UsersSerializer
+from .serializers import UserSerializer
 from .models import User
 from .authentication import access_tokens, JwtAuthenticatedUser
 from .permissions import ViewPermission
@@ -16,7 +16,7 @@ def signup(request):
     data = request.data
     if data['password'] != data["password_confirm"]:
         raise exceptions.APIException("le mot de passe ne convient pas")
-    serializer = UsersSerializer(data=data)
+    serializer = UserSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
@@ -51,7 +51,7 @@ class AuthenticateUSer(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        data = UsersSerializer(request.user).data
+        data = UserSerializer(request.user).data
         data['permissions'] = [p['name'] for p in data['role']['permissions']]
         return Response({
             'data': data
@@ -70,7 +70,7 @@ def signout(reques):
 
 @api_view(['GET'])
 def users(reques):
-    serializer = UsersSerializer(User.objects.all(), many=True)
+    serializer = UserSerializer(User.objects.all(), many=True)
     return Response(serializer.data)
 
 
@@ -80,7 +80,7 @@ class UserViewSet(viewsets.ViewSet):
     # permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        serializer = UsersSerializer(User.objects.all(), many=True)
+        serializer = UserSerializer(User.objects.all(), many=True)
         return Response({
             "data": serializer.data
         })
@@ -88,13 +88,13 @@ class UserViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         user = User.objects.get(id=pk)
-        serializer = UsersSerializer(user)
+        serializer = UserSerializer(user)
         return Response({
             "data": serializer.data
         })
 
     def create(self, request):
-        serializer = UsersSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({
@@ -103,7 +103,7 @@ class UserViewSet(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         user = User.objects.get(id=pk)
-        serializer = UsersSerializer(instance=user, data=request.data)
+        serializer = UserSerializer(instance=user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({

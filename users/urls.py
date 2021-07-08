@@ -7,7 +7,7 @@ from .views import (signup, users, signin, AuthenticateUSer,
 urlpatterns = [
     path('signup', signup),
     path('signin', signin),
-    path('users', users),
+    # path('users', users),
     path('currentuser', AuthenticateUSer.as_view()),
     path('signout', signout),
     
